@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jlcai09.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="环境准备 参考https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_37814112&#x2F;article&#x2F;details&#x2F;131515147 手动安装texinfo、mlocate、bison并export到环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="005 CentOS7升级Glibc2.28并连接Python">
+<meta property="og:url" content="https://jlcai09.github.io/2025/04/10/005%20CentOS7%E5%8D%87%E7%BA%A7Glibc2-28%E5%B9%B6%E8%BF%9E%E6%8E%A5Python/index.html">
+<meta property="og:site_name" content="jlcai09">
+<meta property="og:description" content="环境准备 参考https:&#x2F;&#x2F;blog.csdn.net&#x2F;m0_37814112&#x2F;article&#x2F;details&#x2F;131515147 手动安装texinfo、mlocate、bison并export到环境">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-10T11:11:20.000Z">
+<meta property="article:modified_time" content="2025-11-10T12:58:45.054Z">
+<meta property="article:author" content="jlcai09">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jlcai09.github.io/2025/04/10/005%20CentOS7%E5%8D%87%E7%BA%A7Glibc2-28%E5%B9%B6%E8%BF%9E%E6%8E%A5Python/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jlcai09.github.io/2025/04/10/005%20CentOS7%E5%8D%87%E7%BA%A7Glibc2-28%E5%B9%B6%E8%BF%9E%E6%8E%A5Python/","path":"2025/04/10/005 CentOS7升级Glibc2-28并连接Python/","title":"005 CentOS7升级Glibc2.28并连接Python"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>005 CentOS7升级Glibc2.28并连接Python | jlcai09</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">jlcai09</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85gcc"><span class="nav-text">安装GCC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85make"><span class="nav-text">安装MAKE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85glibc2.28"><span class="nav-text">安装GLIBC2.28</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5python"><span class="nav-text">连接Python</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">jlcai09</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jlcai09.github.io/2025/04/10/005%20CentOS7%E5%8D%87%E7%BA%A7Glibc2-28%E5%B9%B6%E8%BF%9E%E6%8E%A5Python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jlcai09">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="005 CentOS7升级Glibc2.28并连接Python | jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          005 CentOS7升级Glibc2.28并连接Python
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-10 19:11:20" itemprop="dateCreated datePublished" datetime="2025-04-10T19:11:20+08:00">2025-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-10 20:58:45" itemprop="dateModified" datetime="2025-11-10T20:58:45+08:00">2025-11-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="环境准备">环境准备</h1>
+<p>参考https://blog.csdn.net/m0_37814112/article/details/131515147</p>
+<p>手动安装texinfo、mlocate、bison并export到环境</p>
+<span id="more"></span>
+<h2 id="安装gcc">安装GCC</h2>
+<p>注意修改ftp://gcc.gnu.org/pub/gcc/infrastructure/为http://www.mirrorservice.org/sites/sourceware.org/pub/gcc/infrastructure/</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.aliyun.com/gnu/gcc/gcc-9.3.0/gcc-9.3.0.tar.gz</span><br><span class="line">tar axf gcc-9.3.0.tar.gz</span><br><span class="line">cd gcc-9.3.0</span><br><span class="line"></span><br><span class="line">修改ftp://gcc.gnu.org/pub/gcc/infrastructure/为http://www.mirrorservice.org/sites/sourceware.org/pub/gcc/infrastructure/</span><br><span class="line"></span><br><span class="line">./contrib/download_prerequisites</span><br><span class="line">cat /proc/cpuinfo| grep &quot;processor&quot;| wc -l</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">../configure --enable-checking=release --enable-language=c,c++ --disable-multilib --prefix=/usr</span><br><span class="line">make -j16</span><br><span class="line">make install</span><br><span class="line">gcc -v</span><br></pre></td></tr></table></figure>
+<h2 id="安装make">安装MAKE</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.aliyun.com/gnu/make/make-4.3.tar.gz</span><br><span class="line">tar axf make-4.3.tar.gz</span><br><span class="line">cd make-4.3</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">../configure --prefix=/usr &amp;&amp; make &amp;&amp; make install</span><br><span class="line">make -v</span><br></pre></td></tr></table></figure>
+<h2 id="安装glibc2.28">安装GLIBC2.28</h2>
+<p>注意可能识别不到MAKE，则需要手动指定</p>
+<p>../configure <strong>MAKE=/home/user/apps/make/bin/make</strong>
+--prefix=/home/user/apps/glibc --disable-profile --enable-add-ons
+--with-headers=/usr/include --with-binutils=/usr/bin
+--disable-sanity-checks --disable-werror</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wget https://ftp.gnu.org/gnu/glibc/glibc-2.28.tar.gz</span><br><span class="line">tar axf glibc-2.28.tar.gz</span><br><span class="line">cd glibc-2.28/</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin --disable-sanity-checks --disable-werror</span><br><span class="line">make -j16</span><br><span class="line">make install</span><br><span class="line">make localedata/install-locales</span><br><span class="line">export PATH=/path/to/apps/glibc/bin:$PATH</span><br><span class="line">export CPATH=/path/to/apps/glibc/include:$CPATH</span><br><span class="line">export C_INCLUDE_PATH=/path/to/apps/glibc/include:$C_INCLUDE_PATH</span><br><span class="line">ldd --version</span><br><span class="line">ll /lib64/libc.so.6</span><br></pre></td></tr></table></figure>
+<h1 id="连接python">连接Python</h1>
+<p>安装完成后，Python仍不支持安装2.28的whl</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c &quot;import pip._internal.utils.compatibility_tags as tags; print(&#x27;\n&#x27;.join([str(t) for t in tags.get_supported() if &#x27;manylinux&#x27; in str(t) and &#x27;cp312&#x27; in str(t)]))&quot;</span><br></pre></td></tr></table></figure>
+<p>可发现其中没有cp312-none-manylinux_2_28_x86_64</p>
+<p>安装<a
+target="_blank" rel="noopener" href="https://github.com/NixOS/patchelf/releases">Patcheif</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /path/to/bin/python /path/to/bin/python228</span><br><span class="line">patchelf --set-interpreter /path/to/glibc/lib/ld-linux-x86-64.so.2 /path/to/bin/python228</span><br><span class="line">patchelf --set-rpath /path/to/glibc/lib /path/to/bin/python228</span><br><span class="line">python228 -c &quot;import pip._internal.utils.compatibility_tags as tags; print(&#x27;\n&#x27;.join([str(t) for t in tags.get_supported() if &#x27;manylinux&#x27; in str(t) and &#x27;cp312&#x27; in str(t)]))&quot;</span><br></pre></td></tr></table></figure>
+<p>就能看到cp312-none-manylinux_2_28_x86_64</p>
+<p>即可通过python228安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python228 -m pip install</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/01/21/004%20%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0%E7%AC%A6/" rel="prev" title="004 结构描述符">
+                  <i class="fa fa-angle-left"></i> 004 结构描述符
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/10/31/006%20%E6%B6%B2%E7%9B%B8%E5%BB%BA%E6%A8%A1%E4%B8%8EPackmol%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="006 液相建模与Packmol的使用">
+                  006 液相建模与Packmol的使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">jlcai09</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

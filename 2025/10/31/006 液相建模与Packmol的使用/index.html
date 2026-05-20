@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jlcai09.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="片段体积计算与水分子填充 通过蒙特卡洛撒点计算体积需要填充的片段体积，可使用以下代码： 12345678910111213141516171819202122232425262728import torchimport numpy as npfrom ase.data import vdw_radiidef get_volume_mc(atoms, radius_scale&#x3D;1.0, n_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="006 液相建模与Packmol的使用">
+<meta property="og:url" content="https://jlcai09.github.io/2025/10/31/006%20%E6%B6%B2%E7%9B%B8%E5%BB%BA%E6%A8%A1%E4%B8%8EPackmol%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="jlcai09">
+<meta property="og:description" content="片段体积计算与水分子填充 通过蒙特卡洛撒点计算体积需要填充的片段体积，可使用以下代码： 12345678910111213141516171819202122232425262728import torchimport numpy as npfrom ase.data import vdw_radiidef get_volume_mc(atoms, radius_scale&#x3D;1.0, n_">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-10-31T08:56:51.000Z">
+<meta property="article:modified_time" content="2025-11-13T08:01:57.908Z">
+<meta property="article:author" content="jlcai09">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jlcai09.github.io/2025/10/31/006%20%E6%B6%B2%E7%9B%B8%E5%BB%BA%E6%A8%A1%E4%B8%8EPackmol%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jlcai09.github.io/2025/10/31/006%20%E6%B6%B2%E7%9B%B8%E5%BB%BA%E6%A8%A1%E4%B8%8EPackmol%E7%9A%84%E4%BD%BF%E7%94%A8/","path":"2025/10/31/006 液相建模与Packmol的使用/","title":"006 液相建模与Packmol的使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>006 液相建模与Packmol的使用 | jlcai09</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">jlcai09</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%87%E6%AE%B5%E4%BD%93%E7%A7%AF%E8%AE%A1%E7%AE%97%E4%B8%8E%E6%B0%B4%E5%88%86%E5%AD%90%E5%A1%AB%E5%85%85"><span class="nav-text">片段体积计算与水分子填充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#packmol%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">Packmol的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#packmol%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91"><span class="nav-text">Packmol下载与编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E4%B8%BAexe"><span class="nav-text">如何将源码编译为exe</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#packmol%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6"><span class="nav-text">Packmol输入文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E5%91%A8%E6%9C%9F%E6%80%A7%E4%BD%93%E7%B3%BB"><span class="nav-text">非周期性体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E6%80%A7%E4%BD%93%E7%B3%BB"><span class="nav-text">周期性体系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A7%E5%A6%99%E5%88%A9%E7%94%A8restart%E6%96%87%E4%BB%B6%E5%A1%AB%E5%85%85%E7%9B%B8%E5%90%8C%E6%B0%B4%E7%8E%AF%E5%A2%83"><span class="nav-text">巧妙利用restart文件填充相同水环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vmd%E9%AB%98%E9%98%B6%E6%B8%B2%E6%9F%93"><span class="nav-text">VMD高阶渲染</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">jlcai09</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jlcai09.github.io/2025/10/31/006%20%E6%B6%B2%E7%9B%B8%E5%BB%BA%E6%A8%A1%E4%B8%8EPackmol%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jlcai09">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="006 液相建模与Packmol的使用 | jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          006 液相建模与Packmol的使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-31 16:56:51" itemprop="dateCreated datePublished" datetime="2025-10-31T16:56:51+08:00">2025-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-13 16:01:57" itemprop="dateModified" datetime="2025-11-13T16:01:57+08:00">2025-11-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+<h1 id="片段体积计算与水分子填充">片段体积计算与水分子填充</h1>
+<p>通过蒙特卡洛撒点计算体积需要填充的片段体积，可使用以下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.data <span class="keyword">import</span> vdw_radii</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_volume_mc</span>(<span class="params">atoms, radius_scale=<span class="number">1.0</span>, n_samples=<span class="number">1000000</span></span>):</span><br><span class="line">    </span><br><span class="line">    positions = atoms.get_positions(wrap=<span class="literal">True</span>)</span><br><span class="line">    numbers = atoms.get_atomic_numbers()</span><br><span class="line">    radii = np.array([vdw_radii[Z] <span class="keyword">for</span> Z <span class="keyword">in</span> numbers]) * radius_scale</span><br><span class="line">    mins = positions.<span class="built_in">min</span>(axis=<span class="number">0</span>) - radii.<span class="built_in">max</span>()</span><br><span class="line">    maxs = positions.<span class="built_in">max</span>(axis=<span class="number">0</span>) + radii.<span class="built_in">max</span>()</span><br><span class="line">    box_size = maxs - mins</span><br><span class="line">    box_volume = np.prod(box_size)</span><br><span class="line">    rng = np.random.default_rng()</span><br><span class="line">    samples = rng.uniform(mins, maxs, size=(n_samples, <span class="number">3</span>))</span><br><span class="line">    device = torch.device(<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line">    torch.backends.cuda.matmul.allow_tf32 = <span class="literal">True</span></span><br><span class="line">    torch.backends.cudnn.allow_tf32 = <span class="literal">True</span></span><br><span class="line">    dtype = torch.float32</span><br><span class="line">    positions_t = torch.tensor(positions, dtype=dtype).to(device)  </span><br><span class="line">    samples_t = torch.tensor(samples, dtype=dtype).to(device)     </span><br><span class="line">    radii_t = torch.tensor(radii, dtype=dtype).to(device)      </span><br><span class="line">    dists = torch.cdist(samples_t, positions_t)</span><br><span class="line">    inside = torch.<span class="built_in">any</span>(dists &lt;= radii_t, dim=<span class="number">1</span>)  </span><br><span class="line">    inside_np = inside.cpu().numpy()</span><br><span class="line">    volume = (inside_np.<span class="built_in">sum</span>() / n_samples) * box_volume</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> volume</span><br></pre></td></tr></table></figure>
+<p>根据剩余体积计算水分子个数，填充密度为<span
+class="math inline">\(0.0334个/\mathrm{Å}^{3}\)</span></p>
+<span id="more"></span>
+<p><span class="math display">\[
+m_{\mathrm{H}_{2}\mathrm{O}} = \frac{18.015\,g}{6.02214076 \times
+10^{23}} = 2.9915 \times 10^{-23}\,g
+\]</span></p>
+<p><span class="math display">\[
+  n_{\mathrm{mol}} = \frac{1\,g/\mathrm{cm}^{3}}{18.015\,g/\mathrm{mol}}
+= 0.0555\,\mathrm{mol}/\mathrm{cm}^{3}
+\]</span></p>
+<p><span class="math display">\[
+N_{\mathrm{cm}^{3}} = 0.0555 \times 6.022 \times 10^{23} = 3.34 \times
+10^{22}\,\mathrm{分子}/\mathrm{cm}^{3}
+\]</span></p>
+<p><span class="math display">\[
+n_{\mathrm{Å}^{3}} = \frac{3.34 \times 10^{22}}{10^{24}} =
+0.0334\,\mathrm{分子}/\mathrm{Å}^{3}
+\]</span></p>
+<p>通过以上方法填充的水分子个数，对比Materials Studio Amorphous
+Cell模块，以密度为1填充团簇Connolly
+Surface以外空间，两者结果几乎一致</p>
+<h1 id="packmol的使用">Packmol的使用</h1>
+<h2 id="packmol下载与编译">Packmol下载与编译</h2>
+<p>建议下载最新版，网上流传的编译好的exe多为<strong>旧版不支持周期性体系</strong></p>
+<p>Linux: https://github.com/m3g/packmol</p>
+<p>Win:
+官网Julia版本使用非常麻烦，推荐下载Linux版本的Fortran源码编译为EXE</p>
+<h3 id="如何将源码编译为exe">如何将源码编译为exe</h3>
+<ul>
+<li><p>解压源码</p></li>
+<li><p>修改Makefile，指定编译器，这里使用Julia中mingw64的编译器</p></li>
+<li><p>FORTRAN=C:/Users/deemo/.julia/artifacts/b17bda08a19173572926f43a48aad5ef3d845e7c/extracted_files/mingw64/bin/gfortran.exe</p></li>
+<li><p>FLAGS 可能需要删除 -march=native</p></li>
+<li><p>在解压目录下，运行make</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deemo@ASUS14Pro MINGW64 ~/Desktop/packmol/packmol-21.1.1</span><br><span class="line">$ <span class="string">&quot;C:\Users\deemo\.julia\artifacts\b17bda08a19173572926f43a48aad5ef3d845e7c\extracted_files\mingw64\bin\mingw32-make.exe&quot;</span></span><br><span class="line"> ------------------------------------------------------</span><br><span class="line"> Compiling packmol with C:/Users/deemo/.julia/artifacts/b17bda08a19173572926f43a48aad5ef3d845e7c/extracted_files/mingw64/bin/gfortran.exe</span><br><span class="line"> Flags: -O3 -march=native -funroll-loops</span><br><span class="line"> ------------------------------------------------------</span><br><span class="line"> ------------------------------------------------------</span><br><span class="line"> Packmol succesfully built.</span><br><span class="line"> ------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>得到packmol.exe</p></li>
+</ul>
+<p>也可以在linux直接编译为可执行文件</p>
+<h2 id="packmol输入文件">Packmol输入文件</h2>
+<p>准备输入文件input.in，（无格式、命名要求，只要内容文本符合输入格式即可）</p>
+<p>更多内容可参考官网教程:
+https://m3g.github.io/packmol/userguide.shtml#basic</p>
+<h3 id="非周期性体系">非周期性体系</h3>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">tolerance <span class="number">1.5</span></span><br><span class="line">add_box_sides <span class="number">1.2</span></span><br><span class="line">output water_box_5.pdb</span><br><span class="line"></span><br><span class="line">structure h2o.pdb</span><br><span class="line">  number <span class="number">5</span></span><br><span class="line">  inside cube <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">15.</span></span><br><span class="line">end structure</span><br></pre></td></tr></table></figure>
+<p>表示放置5个h2o.pdb分子，放置范围是<span class="math inline">\((x,y,z)
+= (0,0,0)\)</span>到<span class="math inline">\((15,15,15)\)</span></p>
+<p>其中，原子间的距离保持在tolerance 1.5
+Å以上（原子的半径视为tolerance/2）</p>
+<p>另外，填充完成后，盒子将会额外拓展1.2
+Å，因为默认不考虑周期性，不拓展盒子可能边界处原子与周期性的原子距离过近</p>
+<p>运行代码生成结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packmol &lt; input.in</span><br></pre></td></tr></table></figure>
+<h3 id="周期性体系">周期性体系</h3>
+<p>在新版的Packmol中，支持同pbc关键词，在添加结构时考虑周期性</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tolerance <span class="number">2</span></span><br><span class="line">pbc <span class="number">12.0</span> <span class="number">12.0</span> <span class="number">12.0</span></span><br><span class="line">output Ti1_box_water.pdb</span><br><span class="line"></span><br><span class="line">structure Ti1.pdb</span><br><span class="line">  number <span class="number">1</span></span><br><span class="line">  inside box <span class="number">2</span> <span class="number">2</span> <span class="number">2</span> <span class="number">10</span> <span class="number">10</span> <span class="number">10</span></span><br><span class="line">end structure</span><br><span class="line"></span><br><span class="line">structure H2O.pdb</span><br><span class="line">  number <span class="number">54</span></span><br><span class="line">end structure</span><br></pre></td></tr></table></figure>
+<p>定义了一个<span
+class="math inline">\((12,12,12)\)</span>的盒子，放置一个Ti1.pdb结构于<span
+class="math inline">\((x,y,z) = (2,2,2)\)</span>到<span
+class="math inline">\((10,10,10)\)</span>的范围内，并在剩余位置填充54个H2O.pdb分子</p>
+<h2
+id="巧妙利用restart文件填充相同水环境">巧妙利用restart文件填充相同水环境</h2>
+<p>若将包含多个水分子的pdb水分子作为整体输入，则全部的水分子结构被定死，在剩余空间继续填充片段较为困难，然而，packmol读取restart文件进行续算时，则可以对读取的结构进行微调来适应新的环境，因此，可以将指定的水环境pdb文件转化为restart文件作为输入。</p>
+<p>根据Packmol放置代码还原了Python代码，参考https://github.com/m3g/packmol/blob/master/app/packmol.f90中的内容</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">! Put fixed molecules in the specified position</span></span><br><span class="line"></span><br><span class="line">fixed(<span class="number">1</span>:ntype) = <span class="literal">.false.</span></span><br><span class="line"><span class="keyword">do</span> irest = <span class="number">1</span>, nrest</span><br><span class="line"></span><br><span class="line"><span class="comment">! ...此处省略 原代码见Github</span></span><br></pre></td></tr></table></figure>
+<p>根据Packmol放置代码，如果单个水分子的pdb对齐原点，那么生成的restart文件的每个水分子坐标即为其O原子的坐标，仅有旋转角不同，因此可设置loss函数通过minimize来计算最优的旋转角，从而生成restart文件。代码如下:</p>
+<p>注意<strong>单个水分子结构中的O要放置到原点</strong><span
+class="math inline">\((x,y,z) =
+(0,0,0)\)</span>，并且<strong>输入的水溶液结构需要是连续的不能是wrap过的</strong>。</p>
+<p>其中KDTree没有必要，因为ase.neighborlist import
+NeighborList本身wrap后使用KDTree，可以进一步简化代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.transform <span class="keyword">import</span> Rotation</span><br><span class="line"><span class="keyword">from</span> scipy.optimize <span class="keyword">import</span> minimize</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> cdist</span><br><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read</span><br><span class="line"><span class="keyword">from</span> scipy.spatial <span class="keyword">import</span> KDTree</span><br><span class="line"><span class="keyword">from</span> ase <span class="keyword">import</span> Atoms</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_waters</span>(<span class="params">atoms</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Extract water molecules from ASE atoms object using KDTree for fast nearest neighbor search.</span></span><br><span class="line"><span class="string">    For each O atom, finds the 2 nearest H atoms.</span></span><br><span class="line"><span class="string">    Returns list of 3x3 arrays (coordinates for O, H1, H2).</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    positions = atoms.get_positions(wrap=<span class="literal">False</span>)</span><br><span class="line">    symbols = atoms.symbols</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Get O and H indices</span></span><br><span class="line">    o_indices = np.where(symbols == <span class="string">&#x27;O&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    h_indices = np.where(symbols == <span class="string">&#x27;H&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;🔍 Found <span class="subst">&#123;<span class="built_in">len</span>(o_indices)&#125;</span> oxygen atoms in the structure.&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Build KDTree for H atoms</span></span><br><span class="line">    h_positions = positions[h_indices]</span><br><span class="line">    kdtree = KDTree(h_positions)</span><br><span class="line">    </span><br><span class="line">    waters = []</span><br><span class="line">    <span class="keyword">for</span> o_idx <span class="keyword">in</span> o_indices:</span><br><span class="line">        o_pos = positions[o_idx]</span><br><span class="line">        <span class="comment"># Query 2 nearest H atoms</span></span><br><span class="line">        distances, indices = kdtree.query(o_pos, k=<span class="number">2</span>)</span><br><span class="line">        </span><br><span class="line">        h_idx_1, h_idx_2 = h_indices[indices[<span class="number">0</span>]], h_indices[indices[<span class="number">1</span>]]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Order: O, H1, H2 (sorted by distance)</span></span><br><span class="line">        coords = positions[[o_idx, h_idx_1, h_idx_2]]</span><br><span class="line">        waters.append(coords)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Extracted <span class="subst">&#123;<span class="built_in">len</span>(waters)&#125;</span> water molecules.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> waters</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">eulerfixed</span>(<span class="params">beta, gama, teta</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Packmol&#x27;s eulerfixed rotation matrix.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    c1 = np.cos(beta)</span><br><span class="line">    s1 = np.sin(beta)</span><br><span class="line">    c2 = np.cos(gama)</span><br><span class="line">    s2 = np.sin(gama)</span><br><span class="line">    c3 = np.cos(teta)</span><br><span class="line">    s3 = np.sin(teta)</span><br><span class="line">    </span><br><span class="line">    v1 = np.array([c2 * c3, c1 * s3 + c3 * s1 * s2, s1 * s3 - c1 * c3 * s2])</span><br><span class="line">    v2 = np.array([-c2 * s3, c1 * c3 - s1 * s2 * s3, c1 * s2 * s3 + c3 * s1])</span><br><span class="line">    v3 = np.array([s2, -c2 * s1, c1 * c2])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> np.column_stack([v1, v2, v3])</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">loss_func</span>(<span class="params">angles, standard_H, target_H, t</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Loss function for optimization: sum of squared distances of closest matches.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    beta, gama, teta = angles</span><br><span class="line">    R = eulerfixed(beta, gama, teta)</span><br><span class="line">    transformed_H = (R @ standard_H.T).T + t  <span class="comment"># Transform H coordinates</span></span><br><span class="line">    dist_matrix = cdist(transformed_H, target_H)</span><br><span class="line">    <span class="comment"># Assign each transformed H to the closest target H</span></span><br><span class="line">    assigned_sq = []</span><br><span class="line">    used = <span class="built_in">set</span>()</span><br><span class="line">    <span class="keyword">for</span> i, th <span class="keyword">in</span> <span class="built_in">enumerate</span>(transformed_H):</span><br><span class="line">        min_d = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        best_j = -<span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> j, th2 <span class="keyword">in</span> <span class="built_in">enumerate</span>(target_H):</span><br><span class="line">            <span class="keyword">if</span> j <span class="keyword">in</span> used:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            d = np.linalg.norm(th - th2)</span><br><span class="line">            <span class="keyword">if</span> d &lt; min_d:</span><br><span class="line">                min_d = d</span><br><span class="line">                best_j = j</span><br><span class="line">        <span class="keyword">if</span> best_j != -<span class="number">1</span>:</span><br><span class="line">            assigned_sq.append(min_d ** <span class="number">2</span>)</span><br><span class="line">            used.add(best_j)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sum</span>(assigned_sq) <span class="keyword">if</span> assigned_sq <span class="keyword">else</span> <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">make_restart</span>(<span class="params">single_water_pdb, solution_pdb, restart_file</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Generate restart file from single water PDB and solution PDB.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># Read PDB files using ASE</span></span><br><span class="line">    atoms_standard = read(single_water_pdb)</span><br><span class="line">    atoms_solution = read(solution_pdb)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Extract water molecules</span></span><br><span class="line">    standard_waters = extract_waters(atoms_standard)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(standard_waters) != <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Single water PDB should contain exactly one water molecule.&quot;</span>)</span><br><span class="line">    standard = standard_waters[<span class="number">0</span>]</span><br><span class="line">    standard_O = standard[<span class="number">0</span>]</span><br><span class="line">    standard_H = standard[<span class="number">1</span>:]  <span class="comment"># H coordinates relative to O</span></span><br><span class="line"></span><br><span class="line">    solution_waters = extract_waters(atoms_solution)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Output restart file content</span></span><br><span class="line">    restart_lines = []</span><br><span class="line">    <span class="keyword">for</span> water <span class="keyword">in</span> solution_waters:</span><br><span class="line">        water_O = water[<span class="number">0</span>]</span><br><span class="line">        water_H = water[<span class="number">1</span>:]</span><br><span class="line">        t = water_O - standard_O  <span class="comment"># 平移</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 尝试两种氢原子对应关系</span></span><br><span class="line">        best_result = <span class="literal">None</span></span><br><span class="line">        best_loss = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> perm <span class="keyword">in</span> [water_H, water_H[::-<span class="number">1</span>]]:  <span class="comment"># H顺序：原序 / 交换</span></span><br><span class="line">            <span class="comment"># Kabsch 初始化角度</span></span><br><span class="line">            centroid_P = np.mean(standard, axis=<span class="number">0</span>)</span><br><span class="line">            centroid_Q = np.mean(np.vstack([water_O, perm]), axis=<span class="number">0</span>)</span><br><span class="line">            P_centered = standard - centroid_P</span><br><span class="line">            Q_centered = np.vstack([water_O, perm]) - centroid_Q</span><br><span class="line">            H = P_centered.T @ Q_centered</span><br><span class="line">            U, s, Vt = np.linalg.svd(H)</span><br><span class="line">            R_mat = Vt.T @ U.T</span><br><span class="line">            <span class="keyword">if</span> np.linalg.det(R_mat) &lt; <span class="number">0</span>:</span><br><span class="line">                Vt[-<span class="number">1</span>] *= -<span class="number">1</span></span><br><span class="line">                R_mat = Vt.T @ U.T</span><br><span class="line">            initial_angles = Rotation.from_matrix(R_mat).as_euler(<span class="string">&#x27;ZYX&#x27;</span>, degrees=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 优化欧拉角</span></span><br><span class="line">            result = minimize(</span><br><span class="line">                loss_func, initial_angles,</span><br><span class="line">                args=(standard_H, perm, t),</span><br><span class="line">                bounds=[(-np.pi, np.pi), (-np.pi, np.pi), (-np.pi, np.pi)],</span><br><span class="line">                method=<span class="string">&#x27;L-BFGS-B&#x27;</span></span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 记录最佳方案</span></span><br><span class="line">            <span class="keyword">if</span> result.fun &lt; best_loss:</span><br><span class="line">                best_loss = result.fun</span><br><span class="line">                best_result = result</span><br><span class="line"></span><br><span class="line">        beta, gama, teta = best_result.x</span><br><span class="line"></span><br><span class="line">        line = <span class="string">f&quot;  <span class="subst">&#123;t[<span class="number">0</span>]:&gt;<span class="number">20.14</span>E&#125;</span>  <span class="subst">&#123;t[<span class="number">1</span>]:&gt;<span class="number">20.14</span>E&#125;</span>  <span class="subst">&#123;t[<span class="number">2</span>]:&gt;<span class="number">20.14</span>E&#125;</span>  <span class="subst">&#123;beta:&gt;<span class="number">20.14</span>E&#125;</span>  <span class="subst">&#123;gama:&gt;<span class="number">20.14</span>E&#125;</span>  <span class="subst">&#123;teta:&gt;<span class="number">20.14</span>E&#125;</span>&quot;</span></span><br><span class="line">        restart_lines.append(line)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Write to restart file</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(restart_file, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> restart_lines:</span><br><span class="line">            f.write(line + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Restart file generated as <span class="subst">&#123;restart_file&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apply_restart_to_standard</span>(<span class="params">standard_coords, restart_file</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Apply restart transformations to standard water molecule coordinates.</span></span><br><span class="line"><span class="string">    standard_coords: 3x3 array of standard water coords [O, H1, H2]</span></span><br><span class="line"><span class="string">    restart_file: path to restart file</span></span><br><span class="line"><span class="string">    Returns list of transformed coords for each line in restart.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    transformed_molecules = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(restart_file, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            parts = line.split()</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(parts) == <span class="number">6</span>:</span><br><span class="line">                xcm = np.array([<span class="built_in">float</span>(parts[<span class="number">0</span>]), <span class="built_in">float</span>(parts[<span class="number">1</span>]), <span class="built_in">float</span>(parts[<span class="number">2</span>])])</span><br><span class="line">                beta, gama, teta = <span class="built_in">float</span>(parts[<span class="number">3</span>]), <span class="built_in">float</span>(parts[<span class="number">4</span>]), <span class="built_in">float</span>(parts[<span class="number">5</span>])</span><br><span class="line">                </span><br><span class="line">                R = eulerfixed(beta, gama, teta)</span><br><span class="line">                </span><br><span class="line">                transformed_coords = []</span><br><span class="line">                <span class="keyword">for</span> coor <span class="keyword">in</span> standard_coords:</span><br><span class="line">                    xtemp = R @ coor + xcm</span><br><span class="line">                    transformed_coords.append(xtemp)</span><br><span class="line">                transformed_molecules.append(np.array(transformed_coords))</span><br><span class="line">    <span class="keyword">return</span> transformed_molecules</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">recover_restart</span>(<span class="params">single_water_pdb, restart_file, solution_pdb, restored_structure</span>):</span><br><span class="line">    atoms_standard = read(single_water_pdb)</span><br><span class="line">    standard_waters = extract_waters(atoms_standard)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(standard_waters) != <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Standard PDB should contain exactly one water molecule.&quot;</span>)</span><br><span class="line">    standard_coords = standard_waters[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># Apply restart</span></span><br><span class="line">    transformed = apply_restart_to_standard(standard_coords, restart_file)</span><br><span class="line">    combined_atoms = Atoms()</span><br><span class="line">    <span class="keyword">for</span> coords <span class="keyword">in</span> transformed:</span><br><span class="line">        water_atoms = Atoms(symbols=[<span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;H&#x27;</span>], positions=coords)</span><br><span class="line">        combined_atoms.extend(water_atoms)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Load solution to get cell and pbc info</span></span><br><span class="line">    atoms_solution = read(solution_pdb)</span><br><span class="line">    combined_atoms.cell = atoms_solution.cell</span><br><span class="line">    combined_atoms.pbc = atoms_solution.pbc  <span class="comment"># Ensure periodic boundary conditions</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Save to XSD with box info</span></span><br><span class="line">    combined_atoms.write(restored_structure)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;✅ Restored structure saved to <span class="subst">&#123;restored_structure&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># Paths to PDB files (replace with actual paths)</span></span><br><span class="line">    <span class="built_in">print</span>( <span class="string">&quot;请注意输入的solution_pdb不能是wrap过的，水分子坐标必须连续&quot;</span> )</span><br><span class="line">    <span class="built_in">print</span>( <span class="string">&quot;Generating restart file...&quot;</span> )</span><br><span class="line">    single_water_pdb = <span class="string">&#x27;H2O.pdb&#x27;</span>  <span class="comment"># PDB of single water molecule for packmol input</span></span><br><span class="line">    solution_pdb = <span class="string">&#x27;out.xsd&#x27;</span>  <span class="comment"># PDB of the boxed water solution structure</span></span><br><span class="line">    restart_file = <span class="string">&#x27;restart_file.txt&#x27;</span></span><br><span class="line">    make_restart(single_water_pdb, solution_pdb, restart_file)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># restored_structure = &#x27;restored_structure.xsd&#x27;</span></span><br><span class="line">    <span class="comment"># recover_restart(single_water_pdb, restart_file, solution_pdb, restored_structure)</span></span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<p>通过运行代码可得到restart文件</p>
+<p>载入restart_file.txt
+number可以少于restart_file.txt但不能多余restart_file.txt的个数</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">tolerance <span class="number">2</span></span><br><span class="line">seed <span class="number">-1</span></span><br><span class="line">pbc <span class="number">10</span> <span class="number">10</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line">output watertest.pdb</span><br><span class="line"></span><br><span class="line">structure H2O.pdb</span><br><span class="line">  number <span class="number">50</span></span><br><span class="line">  restart_from restart_file.txt</span><br><span class="line">end structure</span><br><span class="line"></span><br><span class="line">structure H2O.pdb</span><br><span class="line">  number <span class="number">10</span></span><br><span class="line">end structure</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="vmd高阶渲染">VMD高阶渲染</h1>
+<p>【如何使用VMD渲染出“发表级”高清光追模拟快照】
+https://www.bilibili.com/video/BV1J9sizJEYB/?share_source=copy_web&amp;vd_source=9f7f128a6900bf70da883f34fe27c360</p>
+<p>【VMD渲染界面离子溶液模型教程】
+https://www.bilibili.com/video/BV1q4o1Y3E9o/?share_source=copy_web&amp;vd_source=9f7f128a6900bf70da883f34fe27c360</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/04/10/005%20CentOS7%E5%8D%87%E7%BA%A7Glibc2-28%E5%B9%B6%E8%BF%9E%E6%8E%A5Python/" rel="prev" title="005 CentOS7升级Glibc2.28并连接Python">
+                  <i class="fa fa-angle-left"></i> 005 CentOS7升级Glibc2.28并连接Python
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/10/007%20VSCODE%E5%85%8D%E5%AF%86SSH%E7%99%BB%E5%BD%95%E5%B9%B6%E4%BD%BF%E7%94%A8X11%E8%BD%AC%E5%8F%91/" rel="next" title="007 VSCODE免密SSH登录并使用X11转发">
+                  007 VSCODE免密SSH登录并使用X11转发 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">jlcai09</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

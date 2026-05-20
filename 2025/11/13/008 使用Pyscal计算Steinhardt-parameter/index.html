@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"jlcai09.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="使用Pyscal计算Steinhardt parameter 将Ase atoms对象转化Pyscal Atoms对象，并计算Steinhardt parameter。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="008 使用Pyscal计算Steinhardt parameter">
+<meta property="og:url" content="https://jlcai09.github.io/2025/11/13/008%20%E4%BD%BF%E7%94%A8Pyscal%E8%AE%A1%E7%AE%97Steinhardt-parameter/index.html">
+<meta property="og:site_name" content="jlcai09">
+<meta property="og:description" content="使用Pyscal计算Steinhardt parameter 将Ase atoms对象转化Pyscal Atoms对象，并计算Steinhardt parameter。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-11-13T07:59:31.000Z">
+<meta property="article:modified_time" content="2025-11-14T02:33:41.115Z">
+<meta property="article:author" content="jlcai09">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jlcai09.github.io/2025/11/13/008%20%E4%BD%BF%E7%94%A8Pyscal%E8%AE%A1%E7%AE%97Steinhardt-parameter/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jlcai09.github.io/2025/11/13/008%20%E4%BD%BF%E7%94%A8Pyscal%E8%AE%A1%E7%AE%97Steinhardt-parameter/","path":"2025/11/13/008 使用Pyscal计算Steinhardt-parameter/","title":"008 使用Pyscal计算Steinhardt parameter"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>008 使用Pyscal计算Steinhardt parameter | jlcai09</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">jlcai09</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8pyscal%E8%AE%A1%E7%AE%97steinhardt-parameter"><span class="nav-text">使用Pyscal计算Steinhardt
+parameter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pyscal"><span class="nav-text">安装Pyscal</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97steinhardt-parameter"><span class="nav-text">计算Steinhardt parameter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F%E4%B8%8E%E7%A4%BA%E4%BE%8B"><span class="nav-text">公式与示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E4%BB%A3%E7%A0%81"><span class="nav-text">计算代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86ase-db%E8%BD%AC%E4%B8%BAnpy%E6%95%B0%E6%8D%AE%E9%9B%86%E5%B9%B6%E7%BB%98%E5%9B%BE"><span class="nav-text">将ASE DB转为npy数据集并绘图</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">jlcai09</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jlcai09.github.io/2025/11/13/008%20%E4%BD%BF%E7%94%A8Pyscal%E8%AE%A1%E7%AE%97Steinhardt-parameter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="jlcai09">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="008 使用Pyscal计算Steinhardt parameter | jlcai09">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          008 使用Pyscal计算Steinhardt parameter
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-11-13 15:59:31" itemprop="dateCreated datePublished" datetime="2025-11-13T15:59:31+08:00">2025-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-14 10:33:41" itemprop="dateModified" datetime="2025-11-14T10:33:41+08:00">2025-11-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="使用pyscal计算steinhardt-parameter">使用Pyscal计算Steinhardt
+parameter</h1>
+<p>将Ase atoms对象转化Pyscal Atoms对象，并计算Steinhardt parameter。</p>
+<span id="more"></span>
+<h1 id="安装pyscal">安装Pyscal</h1>
+<p>参考https://v3.pyscal.org/en/latest/docs/gettingstarted.html</p>
+<h1 id="计算steinhardt-parameter">计算Steinhardt parameter</h1>
+<h2 id="公式与示例">公式与示例</h2>
+<p>计算公式和示例可以参考官网</p>
+<p>计算公式https://v3.pyscal.org/en/latest/docs/methods/02_steinhardt.html</p>
+<p>计算示例https://v3.pyscal.org/en/latest/examples/06_steinhardt_parameters.html</p>
+<h2 id="计算代码">计算代码</h2>
+<p>需要注意的是，一定情况下Pyscal会在创建Atoms对象时引入Ghost原子，导致输出的array长度与原子数不符，此时只需要以真原子个数截断即可。对于单个孤立原子，计算得到的值为nan</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read</span><br><span class="line"><span class="keyword">from</span> pyscal3 <span class="keyword">import</span> System</span><br><span class="line"><span class="keyword">from</span> pyscal3.atoms <span class="keyword">import</span> Atoms <span class="keyword">as</span> PyscalAtoms</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.data <span class="keyword">import</span> atomic_numbers</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ase_to_pyscal</span>(<span class="params">ase_atoms</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;转换 ASE atoms 到 pyscal3 System&quot;&quot;&quot;</span></span><br><span class="line">    positions = ase_atoms.get_positions().tolist()</span><br><span class="line">    species = ase_atoms.get_chemical_symbols()</span><br><span class="line">    types = [atomic_numbers[s] <span class="keyword">for</span> s <span class="keyword">in</span> species]</span><br><span class="line">    adict = &#123;<span class="string">&quot;positions&quot;</span>: positions, <span class="string">&quot;species&quot;</span>: species, <span class="string">&quot;types&quot;</span>: types&#125;</span><br><span class="line">    pyscal_atoms = PyscalAtoms(adict)</span><br><span class="line">    </span><br><span class="line">    sys = System()</span><br><span class="line">    sys.box = ase_atoms.get_cell().tolist()</span><br><span class="line">    sys.atoms = pyscal_atoms</span><br><span class="line">    <span class="keyword">return</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用示例</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line"></span><br><span class="line">    ase_atoms = read(<span class="string">&quot;/home/jlcai/H2O.xsd&quot;</span>,index=<span class="number">0</span>)</span><br><span class="line">    sys = ase_to_pyscal(ase_atoms)</span><br><span class="line">    <span class="comment"># sys.show.all()</span></span><br><span class="line">    <span class="comment"># print(f&quot;nreal: &#123;sys.atoms.nreal&#125;&quot;)</span></span><br><span class="line">    <span class="comment"># print(f&quot;ntotal: &#123;sys.atoms.ntotal&#125;&quot;)</span></span><br><span class="line">    <span class="comment"># print(f&quot;nghost: &#123;sys.atoms.nghost&#125;&quot;)</span></span><br><span class="line">    sys.find.neighbors(method=<span class="string">&#x27;cutoff&#x27;</span>, cutoff=<span class="number">5</span>)</span><br><span class="line">    q = sys.calculate.steinhardt_parameter([<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>], averaged=<span class="literal">True</span>)</span><br><span class="line">    q_real = [sublist[:sys.atoms.nreal] <span class="keyword">for</span> sublist <span class="keyword">in</span> q]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Steinhardt parameters (real atoms only): <span class="subst">&#123;q_real&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="将ase-db转为npy数据集并绘图">将ASE DB转为npy数据集并绘图</h1>
+<p>代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read</span><br><span class="line"><span class="keyword">from</span> pyscal3 <span class="keyword">import</span> System</span><br><span class="line"><span class="keyword">from</span> pyscal3.atoms <span class="keyword">import</span> Atoms <span class="keyword">as</span> PyscalAtoms</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.data <span class="keyword">import</span> atomic_numbers</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> ase.db <span class="keyword">import</span> connect</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ase_to_pyscal</span>(<span class="params">ase_atoms</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;转换 ASE atoms 到 pyscal3 System&quot;&quot;&quot;</span></span><br><span class="line">    positions = ase_atoms.get_positions().tolist()</span><br><span class="line">    species = ase_atoms.get_chemical_symbols()</span><br><span class="line">    types = [atomic_numbers[s] <span class="keyword">for</span> s <span class="keyword">in</span> species]</span><br><span class="line">    adict = &#123;<span class="string">&quot;positions&quot;</span>: positions, <span class="string">&quot;species&quot;</span>: species, <span class="string">&quot;types&quot;</span>: types&#125;</span><br><span class="line">    pyscal_atoms = PyscalAtoms(adict)</span><br><span class="line">    </span><br><span class="line">    sys = System()</span><br><span class="line">    sys.box = ase_atoms.get_cell().tolist()</span><br><span class="line">    sys.atoms = pyscal_atoms</span><br><span class="line">    <span class="keyword">return</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_compute_row</span>(<span class="params">row, q_type, cutoff</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算单个 row 的 Q 参数&quot;&quot;&quot;</span></span><br><span class="line">    atoms = row.toatoms()</span><br><span class="line">    natoms = <span class="built_in">len</span>(atoms)</span><br><span class="line">    </span><br><span class="line">    sys = ase_to_pyscal(atoms)</span><br><span class="line">    sys.find.neighbors(method=<span class="string">&#x27;cutoff&#x27;</span>, cutoff=cutoff)</span><br><span class="line">    q = sys.calculate.steinhardt_parameter([q_type], averaged=<span class="literal">True</span>)</span><br><span class="line">    q_vals = np.array(q[<span class="number">0</span>][:sys.atoms.nreal])</span><br><span class="line">    </span><br><span class="line">    energy = row.data.get(<span class="string">&#x27;energy&#x27;</span>, row.energy <span class="keyword">if</span> <span class="built_in">hasattr</span>(row, <span class="string">&#x27;energy&#x27;</span>) <span class="keyword">else</span> <span class="literal">None</span>)</span><br><span class="line">    <span class="keyword">if</span> energy <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">f&quot;Row <span class="subst">&#123;row.<span class="built_in">id</span>&#125;</span> has no energy&quot;</span>)</span><br><span class="line">    avg_e = energy / natoms</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="string">&#x27;q&#x27;</span>: q_vals,</span><br><span class="line">        <span class="string">&#x27;elements&#x27;</span>: atoms.numbers,</span><br><span class="line">        <span class="string">&#x27;energy&#x27;</span>: np.full(natoms, avg_e)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_process_chunk</span>(<span class="params">args</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;处理指定的 row IDs&quot;&quot;&quot;</span></span><br><span class="line">    db_path, row_ids, npy_path, q_type, cutoff = args</span><br><span class="line">    db = connect(db_path)</span><br><span class="line">    </span><br><span class="line">    results = []</span><br><span class="line">    <span class="keyword">for</span> row_id <span class="keyword">in</span> row_ids:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            row = db.get(<span class="built_in">id</span>=row_id)</span><br><span class="line">            data = _compute_row(row, q_type, cutoff)</span><br><span class="line">            data[<span class="string">&#x27;row_id&#x27;</span>] = row_id  <span class="comment"># 添加 row_id</span></span><br><span class="line">            results.append(data)</span><br><span class="line">        <span class="keyword">except</span> KeyError:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Warning: Row <span class="subst">&#123;row_id&#125;</span> not found, skipping&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Error processing row <span class="subst">&#123;row_id&#125;</span>: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 保存为 numpy</span></span><br><span class="line">    np.save(npy_path, results, allow_pickle=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Worker finished: <span class="subst">&#123;npy_path&#125;</span> (<span class="subst">&#123;<span class="built_in">len</span>(row_ids)&#125;</span> rows)&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> npy_path</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_q_from_db</span>(<span class="params">db_path, npy_path=<span class="string">&#x27;q_data.npy&#x27;</span>, q_type=<span class="number">6</span>, cutoff=<span class="number">5.0</span>, </span></span><br><span class="line"><span class="params">                       n_workers=<span class="number">8</span>, row_ids=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    并行计算 Q 参数，支持断点续算</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        db_path: 数据库路径</span></span><br><span class="line"><span class="string">        npy_path: 输出 npy 路径</span></span><br><span class="line"><span class="string">        q_type: Steinhardt 参数类型</span></span><br><span class="line"><span class="string">        cutoff: 邻居搜索截断距离</span></span><br><span class="line"><span class="string">        n_workers: 并行进程数</span></span><br><span class="line"><span class="string">        row_ids: 指定要计算的 row IDs，None 表示计算所有</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    db = connect(db_path)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 确定需要计算的 row IDs</span></span><br><span class="line">    <span class="keyword">if</span> row_ids <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        all_row_ids = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>, db.count() + <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        all_row_ids = row_ids</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查已计算的 row IDs</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(npy_path):</span><br><span class="line">        existing_data = np.load(npy_path, allow_pickle=<span class="literal">True</span>)</span><br><span class="line">        computed = <span class="built_in">set</span>(item[<span class="string">&#x27;row_id&#x27;</span>] <span class="keyword">for</span> item <span class="keyword">in</span> existing_data)</span><br><span class="line">        todo_ids = [rid <span class="keyword">for</span> rid <span class="keyword">in</span> all_row_ids <span class="keyword">if</span> rid <span class="keyword">not</span> <span class="keyword">in</span> computed]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Found <span class="subst">&#123;<span class="built_in">len</span>(computed)&#125;</span> computed rows, <span class="subst">&#123;<span class="built_in">len</span>(todo_ids)&#125;</span> remaining&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        todo_ids = all_row_ids</span><br><span class="line">        existing_data = []</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;Starting fresh calculation for <span class="subst">&#123;<span class="built_in">len</span>(todo_ids)&#125;</span> rows&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> todo_ids:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;All rows already computed&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 分块</span></span><br><span class="line">    chunk_size = (<span class="built_in">len</span>(todo_ids) + n_workers - <span class="number">1</span>) // n_workers</span><br><span class="line">    chunks = [todo_ids[i:i+chunk_size] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(todo_ids), chunk_size)]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 并行处理</span></span><br><span class="line">    temp_npys = [<span class="string">f&#x27;temp_<span class="subst">&#123;i&#125;</span>.npy&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(chunks))]</span><br><span class="line">    args = [(db_path, chunk, temp_npy, q_type, cutoff) </span><br><span class="line">            <span class="keyword">for</span> chunk, temp_npy <span class="keyword">in</span> <span class="built_in">zip</span>(chunks, temp_npys)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> Pool(n_workers) <span class="keyword">as</span> pool:</span><br><span class="line">        pool.<span class="built_in">map</span>(_process_chunk, args)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 合并到主 npy 文件</span></span><br><span class="line">    all_results = <span class="built_in">list</span>(existing_data)</span><br><span class="line">    <span class="keyword">for</span> temp_npy <span class="keyword">in</span> temp_npys:</span><br><span class="line">        <span class="keyword">if</span> os.path.exists(temp_npy):</span><br><span class="line">            temp_data = np.load(temp_npy, allow_pickle=<span class="literal">True</span>)</span><br><span class="line">            all_results.extend(temp_data)</span><br><span class="line">            os.remove(temp_npy)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 保存最终结果</span></span><br><span class="line">    np.save(npy_path, all_results, allow_pickle=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Total entries: <span class="subst">&#123;<span class="built_in">len</span>(all_results)&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(all_results) != db.count():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Warning: Not all rows computed!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;All rows computed successfully!&quot;</span>)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plot_q_heatmap</span>(<span class="params">npy_paths=<span class="string">&#x27;q_data.npy&#x27;</span>, elementmask=<span class="literal">None</span>, xlim = <span class="literal">None</span>, vmax = <span class="literal">None</span>, bins=<span class="number">50</span>, output=<span class="string">&#x27;q_heatmap.svg&#x27;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    绘制 Q vs Energy 点云热图</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        npy_paths: str 或 list，单个或多个 npy 文件路径</span></span><br><span class="line"><span class="string">        element: int, 指定元素原子序数，None 表示所有元素</span></span><br><span class="line"><span class="string">        bins: int, 热图分箱数</span></span><br><span class="line"><span class="string">        output: str, 输出文件路径</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(npy_paths, <span class="built_in">str</span>):</span><br><span class="line">        npy_paths = [npy_paths]</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Loading data from NPY files...&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">import</span> time</span><br><span class="line">    starttime = time.time()</span><br><span class="line">    </span><br><span class="line">    q_chunks, e_chunks = [], []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> npy_path <span class="keyword">in</span> npy_paths:</span><br><span class="line">        data = np.load(npy_path, allow_pickle=<span class="literal">True</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">            q = item[<span class="string">&#x27;q&#x27;</span>]</span><br><span class="line">            energy = item[<span class="string">&#x27;energy&#x27;</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> elementmask <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                mask = item[<span class="string">&#x27;elements&#x27;</span>] == elementmask</span><br><span class="line">                q = q[mask]</span><br><span class="line">                energy = energy[mask]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(q) &gt; <span class="number">0</span>:</span><br><span class="line">                q_chunks.append(q)</span><br><span class="line">                e_chunks.append(energy)</span><br><span class="line"></span><br><span class="line">    q_all = np.concatenate(q_chunks)</span><br><span class="line">    e_all = np.concatenate(e_chunks)</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Total time taken: <span class="subst">&#123;time.time() - starttime:<span class="number">.2</span>f&#125;</span> seconds&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 使用 hexbin 绘制点云热图</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Plotting heatmap...&quot;</span>)</span><br><span class="line">    fig, ax = plt.subplots(figsize=(<span class="number">10</span>, <span class="number">8</span>))</span><br><span class="line">    <span class="keyword">if</span> xlim <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        xlim = e_all.<span class="built_in">min</span>(), e_all.<span class="built_in">max</span>()</span><br><span class="line">    ylim = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    ax.<span class="built_in">set</span>(xlim=xlim, ylim=ylim)</span><br><span class="line">    hb = ax.hexbin(e_all, q_all, gridsize=bins, cmap=<span class="string">&#x27;hot&#x27;</span>, mincnt=<span class="number">1</span>, </span><br><span class="line">                vmax=vmax, bins=<span class="string">&#x27;log&#x27;</span>, linewidths=<span class="number">0.2</span>, extent=[xlim[<span class="number">0</span>], xlim[<span class="number">1</span>], ylim[<span class="number">0</span>], ylim[<span class="number">1</span>]])</span><br><span class="line">    ax.set_xlabel(<span class="string">&#x27;Energy Per-Atom (eV/atom)&#x27;</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">    ax.set_ylabel(<span class="string">&#x27;OP6&#x27;</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">    ax.tick_params(axis=<span class="string">&#x27;both&#x27;</span>, which=<span class="string">&#x27;major&#x27;</span>, labelsize=<span class="number">16</span>) <span class="comment"># 坐标轴主刻度字体大小</span></span><br><span class="line"></span><br><span class="line">    title = <span class="string">&#x27;OP6 vs Energy&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> elementmask:</span><br><span class="line">        <span class="keyword">from</span> ase.data <span class="keyword">import</span> chemical_symbols</span><br><span class="line">        title += <span class="string">f&#x27; (<span class="subst">&#123;chemical_symbols[elementmask]&#125;</span>)&#x27;</span></span><br><span class="line">    ax.set_title(title, fontsize=<span class="number">24</span>)</span><br><span class="line">    </span><br><span class="line">    cb = plt.colorbar(hb, label=<span class="string">&#x27;log10(Count)&#x27;</span>)</span><br><span class="line">    cb.ax.tick_params(labelsize=<span class="number">16</span>)  <span class="comment"># 色条刻度字体</span></span><br><span class="line">    cb.set_label(<span class="string">&#x27;log10(Count)&#x27;</span>, fontsize=<span class="number">20</span>)</span><br><span class="line">    plt.tight_layout()</span><br><span class="line">    <span class="comment"># 保存svg矢量图</span></span><br><span class="line">    plt.savefig(output, <span class="built_in">format</span>=<span class="string">&#x27;svg&#x27;</span>, dpi=<span class="number">600</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;Saved to <span class="subst">&#123;output&#125;</span>&quot;</span>)</span><br><span class="line">    plt.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># db = connect(&#x27;collected.db&#x27;)</span></span><br><span class="line">    <span class="comment"># row_57662 = db.get(id=57662)</span></span><br><span class="line">    <span class="comment"># atom = row_57662.toatoms()</span></span><br><span class="line">    <span class="comment"># from ase.visualize import view</span></span><br><span class="line">    <span class="comment"># view(atom)</span></span><br><span class="line">    <span class="comment"># data = _compute_row(row_57662, q_type=6, cutoff=5.0)</span></span><br><span class="line">    <span class="comment"># print(data)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># calculate_q_from_db(&#x27;collected.db&#x27;, &#x27;collected.npy&#x27;, q_type=6, cutoff=5.0, n_workers=32)</span></span><br><span class="line"></span><br><span class="line">    npy_paths = [<span class="string">&#x27;collected.npy&#x27;</span>]</span><br><span class="line">    plot_q_heatmap(npy_paths, elementmask=<span class="literal">None</span>, output=<span class="string">&#x27;out.svg&#x27;</span>, xlim=(-<span class="number">10</span>, <span class="number">10</span>), vmax=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/10/007%20VSCODE%E5%85%8D%E5%AF%86SSH%E7%99%BB%E5%BD%95%E5%B9%B6%E4%BD%BF%E7%94%A8X11%E8%BD%AC%E5%8F%91/" rel="prev" title="007 VSCODE免密SSH登录并使用X11转发">
+                  <i class="fa fa-angle-left"></i> 007 VSCODE免密SSH登录并使用X11转发
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/01/26/009%20CentOS7%E5%AE%89%E8%A3%85plumed%E5%B9%B6%E6%8E%A5%E5%85%A5ase-mace%E8%BF%9B%E8%A1%8CWTM-eABF%E9%87%87%E6%A0%B7/" rel="next" title="009 CentOS7安装plumed并接入ase-mace进行WTM-eABF采样">
+                  009 CentOS7安装plumed并接入ase-mace进行WTM-eABF采样 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">jlcai09</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
