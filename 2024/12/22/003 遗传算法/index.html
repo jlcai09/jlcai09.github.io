@@ -1,63 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"jlcai09.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="Ploty Visualization       遗传算法 笔记整理自《遗传算法原理及应用》作者：周明、孙树栋 原书部分描述错误有修正 一、概念 包括最优化的概念，遗传算法的概念和特点，并给出具体示例 1.1最优化 遗传算法是一种最优化算法，最优化问题可表示为:  最优化问题求最优解，或者近似最优解的算法主要可分为枚举法、启发式算法、搜索算法  枚">
-<meta property="og:type" content="article">
-<meta property="og:title" content="003 遗传算法">
-<meta property="og:url" content="https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/index.html">
-<meta property="og:site_name" content="jlcai09">
-<meta property="og:description" content="Ploty Visualization       遗传算法 笔记整理自《遗传算法原理及应用》作者：周明、孙树栋 原书部分描述错误有修正 一、概念 包括最优化的概念，遗传算法的概念和特点，并给出具体示例 1.1最优化 遗传算法是一种最优化算法，最优化问题可表示为:  最优化问题求最优解，或者近似最优解的算法主要可分为枚举法、启发式算法、搜索算法  枚">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://jlcai09.github.io/files/003/2.3-1.svg">
-<meta property="og:image" content="https://jlcai09.github.io/files/003/2.3-2.svg">
-<meta property="og:image" content="https://jlcai09.github.io/files/003/4.3-1.svg">
-<meta property="og:image" content="https://jlcai09.github.io/files/003/4.4-1.svg">
-<meta property="og:image" content="https://jlcai09.github.io/files/003/5.5.1-1.svg">
-<meta property="article:published_time" content="2024-12-22T05:12:26.000Z">
-<meta property="article:modified_time" content="2025-10-31T12:26:30.641Z">
-<meta property="article:author" content="jlcai09">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jlcai09.github.io/files/003/2.3-1.svg">
-
-
-<link rel="canonical" href="https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/","path":"2024/12/22/003 遗传算法/","title":"003 遗传算法"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>003 遗传算法 | jlcai09</title>
   
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>003 遗传算法 · jlcai09</title>
+<meta name="description" content="一边做分子模拟，一边记录代码、工具和绕过的弯路。">
+<meta name="author" content="jlcai09">
+<meta name="theme-color" content="#f2f2f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0f" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="003 遗传算法 · jlcai09">
+<meta property="og:type" content="article">
+<meta property="og:description" content="一边做分子模拟，一边记录代码、工具和绕过的弯路。">
+<meta property="og:url" content="https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+<script>
+  (function () {
+    try {
+      var key = 'kai-bento-theme';
+      var value = localStorage.getItem(key);
+      if (value !== 'dark' && value !== 'light') {
+        value = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', value);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>
 
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -170,154 +145,74 @@ mjx-container[display="true"] + br {
   display: none;
 }
 </style></head>
+<body class="layout-post" data-search-url="/search.xml">
+  <div class="shell" id="top">
+    
+<header class="site-head">
+  <a class="logo" href="/" aria-label="jlcai09 首页">
+    <span class="mark">J</span>
+    <span>jlcai09</span>
+  </a>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">jlcai09</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-  </ul>
-</nav>
-
-
-
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">遗传算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%A6%82%E5%BF%B5"><span class="nav-text">一、概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96"><span class="nav-text">1.1最优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95-1"><span class="nav-text">1.2遗传算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-text">1.3特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-text">1.4示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%9F%BA%E6%9C%AC%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">二、基本遗传算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E9%80%BB%E8%BE%91"><span class="nav-text">2.1算法逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-text">2.2算法实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="nav-text">2.3示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E6%8A%80%E6%9C%AF"><span class="nav-text">三、基本实现技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E6%96%B9%E6%B3%95"><span class="nav-text">3.1编码方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E5%BA%94%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="nav-text">3.2适应度函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E7%AE%97%E5%AD%90"><span class="nav-text">3.3选择算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%AE%97%E5%AD%90"><span class="nav-text">3.4交叉算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%BC%82%E7%AE%97%E5%AD%90"><span class="nav-text">3.5变异算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-text">3.6运行参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%9D%A1%E4%BB%B6%E5%A4%84%E7%90%86"><span class="nav-text">3.7约束条件处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E9%AB%98%E7%BA%A7%E5%AE%9E%E7%8E%B0%E6%8A%80%E6%9C%AF"><span class="nav-text">四、高级实现技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%92%E4%BD%8D%E7%AE%97%E5%AD%90"><span class="nav-text">4.1倒位算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%80%8D%E4%BD%93%E4%B8%8E%E6%98%BE%E6%80%A7%E6%93%8D%E4%BD%9C%E7%AE%97%E5%AD%90"><span class="nav-text">4.2二倍体与显性操作算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%95%BF%E5%BA%A6%E6%9F%93%E8%89%B2%E4%BD%93%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">4.3变长度染色体遗传算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%94%9F%E5%A2%83%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">4.4小生境遗传算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">5.5混合遗传算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E7%AE%97%E6%B3%95"><span class="nav-text">5.5.1模拟退火算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E5%9C%A8%E6%B1%82%E8%A7%A3%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-text">5.5.2混合遗传算法在求解背包问题中的应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E5%B9%B6%E8%A1%8C%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95"><span class="nav-text">五、并行遗传算法</span></a></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">jlcai09</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">10</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
+  <nav class="nav-pill" aria-label="主导航">
+    
+      
+      <a href="/">首页</a>
+    
+      
+      <a href="/archives/">归档</a>
+    
   </nav>
+
+  <div class="head-tools">
+    
+    <button class="icon-btn" type="button" data-search-open aria-label="搜索文章" title="搜索文章">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="m16 16 4.2 4.2"></path>
+      </svg>
+    </button>
+    
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色模式" title="切换深浅色模式">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2"></circle>
+        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"></path>
+      </svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+    <main class="site-main">
+      
+
+<div class="reading-progress" aria-hidden="true"><i id="reading-progress-bar"></i></div>
+
+<div class="article-topbar">
+  <a class="back-link" href="/">← 回首页</a>
+  <span class="topbar-date">2024.12.22</span>
 </div>
 
-        </div>
-      </div>
-    </div>
+<article class="article">
+  <div class="article-grid" id="article-grid">
+    <div class="article-main">
+      <div class="article-card">
+        <header class="article-head">
+          <p class="eyebrow"><span class="dot"></span> Post / 2024</p>
+          <h1>003 遗传算法</h1>
+          <div class="article-meta">
+            <span>2024-12-22</span>
+            <span>35 分钟阅读</span>
+            <span>13936 字</span>
+            
+          </div>
+          
+        </header>
 
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jlcai09.github.io/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jlcai09">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jlcai09">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="003 遗传算法 | jlcai09">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          003 遗传算法
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-12-22 13:12:26" itemprop="dateCreated datePublished" datetime="2024-12-22T13:12:26+08:00">2024-12-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-10-31 20:26:30" itemprop="dateModified" datetime="2025-10-31T20:26:30+08:00">2025-10-31</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><html lang="en">
+        <div class="article-content">
+          <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>
@@ -1599,96 +1494,73 @@ Algorithm）求解时，先将物品按照价值密度<span class="math inline">
 <li>基于群体分组的并行。可根据不同的遗传算法分组，独立运行。</li>
 </ul>
 
-    </div>
+        </div>
 
-    
-    
-    
+        <div class="article-end">
+          <span class="end-mark">— 完 —</span>
+          <a class="end-link" href="/">回首页 ↗</a>
+        </div>
+      </div>
 
-    <footer class="post-footer">
-
+      <nav class="post-nav" aria-label="文章导航">
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/" rel="prev" title="002 DeepMD-kit简单演示——水分子模拟">
-                  <i class="fa fa-angle-left"></i> 002 DeepMD-kit简单演示——水分子模拟
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2025/01/21/004%20%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0%E7%AC%A6/" rel="next" title="004 结构描述符">
-                  004 结构描述符 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">jlcai09</span>
-  </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
+        <a class="post-nav-item prev" href="/2025/01/21/004%20%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0%E7%AC%A6/">
+          <span class="nav-label">← 上一篇</span>
+          <span class="nav-title">004 结构描述符</span>
+        </a>
+        
+        
+        <a class="post-nav-item next" href="/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/">
+          <span class="nav-label">下一篇 →</span>
+          <span class="nav-title">002 DeepMD-kit简单演示——水分子模拟</span>
+        </a>
+        
+      </nav>
     </div>
-  </footer>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
+    
+    <aside class="article-aside" id="article-aside">
+      <div class="toc-card">
+        <p class="label">On this page</p>
+        <nav class="toc-list" id="toc" aria-label="文章目录"></nav>
+      </div>
+    </aside>
+    
   </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
+</article>
+
+    </main>
+    <footer class="site-foot">
+  <span>© 2026 jlcai09 · 由 Hexo 驱动</span>
+  <span class="foot-links">
+    <a href="/archives/">归档</a>
+    <span class="foot-sep">·</span>
+    <a href="#top">回到顶部 ↑</a>
+  </span>
+</footer>
+
   </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
-
+<div class="search-overlay" id="search-overlay" aria-hidden="true">
+  <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-dialog-title">
+    <h2 class="sr-only" id="search-dialog-title">搜索文章</h2>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="m16 16 4.2 4.2"></path>
+      </svg>
+      <input id="search-overlay-input" type="search" placeholder="搜索标题或正文…" autocomplete="off" spellcheck="false" aria-label="搜索文章">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="search-hint">
+      <span>输入关键词，空格分隔多个词</span>
+      <span id="search-overlay-count"></span>
+    </div>
+    <div class="search-results" id="search-overlay-results" aria-live="polite"></div>
+  </div>
+</div>
 
 
+  <script src="/js/main.js" defer></script>
 </body>
 </html>

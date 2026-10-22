@@ -1,57 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"jlcai09.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":true,"style":null},"fold":{"enable":true,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="由于《神经网络与深度学习》课程论文需要，对水分子体系设计了一个简单的DeepMD-kit演示，包括了训练数据的产生、模型的训练、模型的应用 开始吧！ se_e2_a模型介绍 DeepMD-kit的se_e2_a模型（详情见论文）是一个通用的神经网络模型，其包括描述符提取、数据拟合两部分。 描述符提取 一个包含N个原子的解耦，其坐标你可以表示为N*3矩阵">
-<meta property="og:type" content="article">
-<meta property="og:title" content="002 DeepMD-kit简单演示——水分子模拟">
-<meta property="og:url" content="https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/index.html">
-<meta property="og:site_name" content="jlcai09">
-<meta property="og:description" content="由于《神经网络与深度学习》课程论文需要，对水分子体系设计了一个简单的DeepMD-kit演示，包括了训练数据的产生、模型的训练、模型的应用 开始吧！ se_e2_a模型介绍 DeepMD-kit的se_e2_a模型（详情见论文）是一个通用的神经网络模型，其包括描述符提取、数据拟合两部分。 描述符提取 一个包含N个原子的解耦，其坐标你可以表示为N*3矩阵">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-12-17T13:30:20.000Z">
-<meta property="article:modified_time" content="2025-10-31T12:26:43.770Z">
-<meta property="article:author" content="jlcai09">
-<meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/">
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/","path":"2024/12/17/002 DeepMD-kit简单演示——水分子模拟/","title":"002 DeepMD-kit简单演示——水分子模拟"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>002 DeepMD-kit简单演示——水分子模拟 | jlcai09</title>
   
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>002 DeepMD-kit简单演示——水分子模拟 · jlcai09</title>
+<meta name="description" content="一边做分子模拟，一边记录代码、工具和绕过的弯路。">
+<meta name="author" content="jlcai09">
+<meta name="theme-color" content="#f2f2f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0f" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="002 DeepMD-kit简单演示——水分子模拟 · jlcai09">
+<meta property="og:type" content="article">
+<meta property="og:description" content="一边做分子模拟，一边记录代码、工具和绕过的弯路。">
+<meta property="og:url" content="https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/">
+<link rel="canonical" href="https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/">
+<link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+<script>
+  (function () {
+    try {
+      var key = 'kai-bento-theme';
+      var value = localStorage.getItem(key);
+      if (value !== 'dark' && value !== 'light') {
+        value = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', value);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>
 
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -164,154 +145,74 @@ mjx-container[display="true"] + br {
   display: none;
 }
 </style></head>
+<body class="layout-post" data-search-url="/search.xml">
+  <div class="shell" id="top">
+    
+<header class="site-head">
+  <a class="logo" href="/" aria-label="jlcai09 首页">
+    <span class="mark">J</span>
+    <span>jlcai09</span>
+  </a>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">jlcai09</p>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
-  </ul>
-</nav>
-
-
-
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%90%A7"><span class="nav-text">开始吧！</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#se_e2_a%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="nav-text">se_e2_a模型介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%8F%90%E5%8F%96"><span class="nav-text">描述符提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E9%87%8F%E6%8B%9F%E5%90%88"><span class="nav-text">能量拟合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-text">数据准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%B0%B4%E5%88%86%E5%AD%90%E7%BB%93%E6%9E%84"><span class="nav-text">优化水分子结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%B0%B4%E5%88%86%E5%AD%90%E7%9B%92%E5%AD%90"><span class="nav-text">生成水分子盒子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#aimd%E6%A8%A1%E6%8B%9F"><span class="nav-text">AIMD模拟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90dp%E6%A0%BC%E5%BC%8F%E6%95%B0%E6%8D%AE"><span class="nav-text">生成DP格式数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="nav-text">训练模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fp32_input_1.json"><span class="nav-text">fp32_input_1.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fp32_input_2.json"><span class="nav-text">fp32_input_2.json</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8"><span class="nav-text">模型使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E8%83%BD%E9%87%8F%E9%A2%84%E6%B5%8B"><span class="nav-text">模型驱动能量预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B%E7%BB%93%E6%9E%9C"><span class="nav-text">预测结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%A9%B1%E5%8A%A8%E7%BB%93%E6%9E%84%E4%BC%98%E5%8C%96"><span class="nav-text">模型驱动结构优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%BB%93%E6%9E%9C"><span class="nav-text">优化结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9D%9F"><span class="nav-text">结束！</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">jlcai09</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">10</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
+  <nav class="nav-pill" aria-label="主导航">
+    
+      
+      <a href="/">首页</a>
+    
+      
+      <a href="/archives/">归档</a>
+    
   </nav>
+
+  <div class="head-tools">
+    
+    <button class="icon-btn" type="button" data-search-open aria-label="搜索文章" title="搜索文章">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="m16 16 4.2 4.2"></path>
+      </svg>
+    </button>
+    
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换深浅色模式" title="切换深浅色模式">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.2"></circle>
+        <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"></path>
+      </svg>
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 6.8 6.8 0 0 0 20 14.5Z"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+    <main class="site-main">
+      
+
+<div class="reading-progress" aria-hidden="true"><i id="reading-progress-bar"></i></div>
+
+<div class="article-topbar">
+  <a class="back-link" href="/">← 回首页</a>
+  <span class="topbar-date">2024.12.17</span>
 </div>
 
-        </div>
-      </div>
-    </div>
+<article class="article">
+  <div class="article-grid" id="article-grid">
+    <div class="article-main">
+      <div class="article-card">
+        <header class="article-head">
+          <p class="eyebrow"><span class="dot"></span> Post / 2024</p>
+          <h1>002 DeepMD-kit简单演示——水分子模拟</h1>
+          <div class="article-meta">
+            <span>2024-12-17</span>
+            <span>8 分钟阅读</span>
+            <span>3033 字</span>
+            
+          </div>
+          
+        </header>
 
-    
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jlcai09.github.io/2024/12/17/002%20DeepMD-kit%E7%AE%80%E5%8D%95%E6%BC%94%E7%A4%BA%E2%80%94%E2%80%94%E6%B0%B4%E5%88%86%E5%AD%90%E6%A8%A1%E6%8B%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="jlcai09">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="jlcai09">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="002 DeepMD-kit简单演示——水分子模拟 | jlcai09">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          002 DeepMD-kit简单演示——水分子模拟
-        </h1>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-12-17 21:30:20" itemprop="dateCreated datePublished" datetime="2024-12-17T21:30:20+08:00">2024-12-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-10-31 20:26:43" itemprop="dateModified" datetime="2025-10-31T20:26:43+08:00">2025-10-31</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody"><p>由于《神经网络与深度学习》课程论文需要，对水分子体系设计了一个简单的DeepMD-kit演示，包括了训练数据的产生、模型的训练、模型的应用</p>
+        <div class="article-content">
+          <p>由于《神经网络与深度学习》课程论文需要，对水分子体系设计了一个简单的DeepMD-kit演示，包括了训练数据的产生、模型的训练、模型的应用</p>
 <h1 id="开始吧">开始吧！</h1>
 <h2 id="se_e2_a模型介绍">se_e2_a模型介绍</h2>
 <p>DeepMD-kit的se_e2_a模型（详情见<a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper/2018/hash/e2ad76f2326fbc6b56a45a56c59fafdb-Abstract.html">论文</a>）是一个通用的神经网络模型，其包括描述符提取、数据拟合两部分。</p>
@@ -559,96 +460,73 @@ VASP能量(eV)
 </script>
 <h1 id="结束">结束！</h1>
 
-    </div>
+        </div>
 
-    
-    
-    
+        <div class="article-end">
+          <span class="end-mark">— 完 —</span>
+          <a class="end-link" href="/">回首页 ↗</a>
+        </div>
+      </div>
 
-    <footer class="post-footer">
-
+      <nav class="post-nav" aria-label="文章导航">
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2024/12/14/001%20%E4%BD%BF%E7%94%A8Github%E3%80%81Hexo%E9%83%A8%E7%BD%B2%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="prev" title="001 使用Github、Hexo部署个人博客">
-                  <i class="fa fa-angle-left"></i> 001 使用Github、Hexo部署个人博客
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" rel="next" title="003 遗传算法">
-                  003 遗传算法 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">jlcai09</span>
-  </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
+        <a class="post-nav-item prev" href="/2024/12/22/003%20%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+          <span class="nav-label">← 上一篇</span>
+          <span class="nav-title">003 遗传算法</span>
+        </a>
+        
+        
+        <a class="post-nav-item next" href="/2024/12/14/001%20%E4%BD%BF%E7%94%A8Github%E3%80%81Hexo%E9%83%A8%E7%BD%B2%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
+          <span class="nav-label">下一篇 →</span>
+          <span class="nav-title">001 使用Github、Hexo部署个人博客</span>
+        </a>
+        
+      </nav>
     </div>
-  </footer>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
+    
+    <aside class="article-aside" id="article-aside">
+      <div class="toc-card">
+        <p class="label">On this page</p>
+        <nav class="toc-list" id="toc" aria-label="文章目录"></nav>
+      </div>
+    </aside>
+    
   </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
+</article>
+
+    </main>
+    <footer class="site-foot">
+  <span>© 2026 jlcai09 · 由 Hexo 驱动</span>
+  <span class="foot-links">
+    <a href="/archives/">归档</a>
+    <span class="foot-sep">·</span>
+    <a href="#top">回到顶部 ↑</a>
+  </span>
+</footer>
+
   </div>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
-
-  
-
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
-
+<div class="search-overlay" id="search-overlay" aria-hidden="true">
+  <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-dialog-title">
+    <h2 class="sr-only" id="search-dialog-title">搜索文章</h2>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="m16 16 4.2 4.2"></path>
+      </svg>
+      <input id="search-overlay-input" type="search" placeholder="搜索标题或正文…" autocomplete="off" spellcheck="false" aria-label="搜索文章">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="search-hint">
+      <span>输入关键词，空格分隔多个词</span>
+      <span id="search-overlay-count"></span>
+    </div>
+    <div class="search-results" id="search-overlay-results" aria-live="polite"></div>
+  </div>
+</div>
 
 
+  <script src="/js/main.js" defer></script>
 </body>
 </html>
